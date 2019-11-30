@@ -1,68 +1,108 @@
-function Professor() {
-    let nome;
-    let matrícula;
-    let cpf;
-    let salario;
+class Funcionario {
+    _nome;
+    _cpf;
+    _salario;
+    _matricula;
 
-    this.getImpostoDeRenda = () =>{
-        return salario*0.2;
-    };
-
-    this.getNome = () => {
-        return nome
-    };
-
-    this.setNome = n => {
-        nome = n;
-    };
-
-    this.getSalario = () => {
-        return salario
-    };
-
-    this.setSalario = s => {
-        salario = s;
-    };
-}
-function Diretor(){
-    let nome;
-    let matricula;
-    let cpf;
-    let salario;
-    let tempoDeCasa;
-
-    this.getImpostoDeRenda = () =>{
-        return salario*0.23;
+    constructor(matricula) {
+        this.matricula = matricula;
     }
 
-    this.getNome = () => {
-        return nome
+    get nome() {
+        return this._nome;
     };
 
-    this.setNome = n => {
-        nome = n;
+    get salario() {
+        return this._salario;
     };
 
-    this.getSalario = () => {
-        return salario
+    set nome(nome) {
+        this._nome = nome;
     };
 
-    this.setSalario = s => {
-        salario = s;
+    set salario(salario) {
+        this._salario = salario;
+    };
+
+    get cpf() {
+        return this._cpf;
+    };
+
+    set cpf(numeroCPF) {
+        this._cpf = numeroCPF;
+    };
+
+    get matricula() {
+        return this._matricula;
+    };
+
+    set matricula(matricula) {
+        this._matricula = matricula;
     };
 }
 
-const p1 = new Professor();
-p1.setNome('Fulano');
-p1.setSalario(100);
-console.log(p1);
-console.log(p1.getImpostoDeRenda());
+class Professor extends Funcionario {
+    anoDeAdmissao;
 
-const d1 = new Diretor();
-d1.setNome('Fulano');
-d1.setSalario(1000);
-console.log(d1);
-console.log(d1.getImpostoDeRenda());
+    constructor(matricula) {
+        super(matricula);
+    }
 
+    getImpostoDeRenda = () => super.salario * 0.2;
 
+    set setAnoDeAdmissao(ano) {
+        this.anoDeAdmissao = ano;
+    }
+}
 
+class Diretor extends Funcionario {
+    _tempoDeCasa;
+
+    constructor(matricula) {
+        super(matricula);
+    }
+
+    getImpostoDeRenda = () => {
+        return super.salario * 0.23;
+    };
+
+    set tempoDeCasa(tempo) {
+        this._tempoDeCasa = tempo;
+    }
+
+    get tempoDeCasa() {
+        return this._tempoDeCasa;
+    }
+}
+
+let funcionarios = [];
+
+const diretor = new Diretor(2073);
+diretor.nome = "Wilson";
+diretor.salario=1000;
+funcionarios.push(diretor);
+
+const professor= new Professor(123);
+professor.anoDeAdmissao=2014;
+professor.salario=900;
+professor.cpf = '12345';
+funcionarios.push(professor);
+
+const professor2= new Professor(123);
+professor2.anoDeAdmissao=2014;
+professor2.salario=1100;
+professor2.cpf = '123456';
+professor2.nome='Carlos';
+funcionarios.push(professor2);
+
+function somarImpostosDeRenda() {
+    let somaDosImpostosDeRenda=0;
+    for (let i in funcionarios) {
+        let funcionario = funcionarios[i];
+        somaDosImpostosDeRenda += funcionario.getImpostoDeRenda();
+    }
+    return somaDosImpostosDeRenda;
+}
+
+const mediaDoImpostoDeRenda = (somarImpostosDeRenda()/ funcionarios.length );
+console.log(mediaDoImpostoDeRenda);
